@@ -6,39 +6,36 @@ import (
 
 type LRUCache struct {
 	Capacity   int
-	CachedData KeyValuePairs
+	CachedData map[string]*CachedItem
 }
 
-type KeyValuePair struct {
-	Key   string
-	Value interface{}
+type CachedItem struct {
+	Key      string
+	Value    any
+	previous *CachedItem
+	next     *CachedItem
 }
-
-type KeyValuePairs []KeyValuePair
 
 func NewLRUCache(capacity int) *LRUCache {
 	return &LRUCache{
-		Capacity: capacity,
+		Capacity:   capacity,
+		CachedData: make(map[string]*CachedItem),
 	}
 }
 
-func (c *LRUCache) Get(key string) interface{} {
+func (c *LRUCache) Get(key string) *CachedItem {
+	if _, ok := c.CachedData[key]; !ok {
+		return nil
+	}
 
-	return c.search(key)
+	return c.CachedData[key]
 }
 
-func (c *LRUCache) Set(key string) interface{} {
-
+func (c *LRUCache) Set(key string) any {
 	return c.insert(key)
 }
 
-func (c *LRUCache) search(key string) interface{} {
-
-	return -1
-}
-
-func (c *LRUCache) insert(key string) interface{} {
-
+func (c *LRUCache) insert(key string) any {
 	return -1
 }
 
