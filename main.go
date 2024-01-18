@@ -52,11 +52,17 @@ func (c *LRUCache) setNewHead(newHead *CachedPair) {
 	}
 
 	newHeadOldPrevious := newHead.previous
-	newHeadOldNext := newHead.previous
+	newHeadOldNext := newHead.next
 
 	newHeadOldPrevious.next = newHeadOldNext
 
-	newHeadOldNext.previous = newHeadOldPrevious
+	if newHeadOldNext != nil {
+		newHeadOldNext.previous = newHeadOldPrevious
+	}
+
+	if newHead == c.tail {
+		c.tail = newHeadOldPrevious
+	}
 
 	newHead.next = c.head
 	newHead.previous = nil
